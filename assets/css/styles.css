@@ -47,6 +47,18 @@ h1, h2, h3, h4, h5 {
 	color: var(--primary-color) !important;
 }
 
+/* Ajustes del logo en móviles */
+@media (max-width: 576px) {
+    .navbar .container {
+        padding-left: 0.75rem; /* separa el logo del borde izquierdo */
+    }
+    .navbar-brand img {
+        height: 40px !important;
+        transform: scale(1.2) !important; /* tamaño más equilibrado en móvil */
+        transform-origin: left center !important;
+    }
+}
+
 .nav-link {
 	color: var(--text-light) !important;
 	transition: all 0.3s ease;
