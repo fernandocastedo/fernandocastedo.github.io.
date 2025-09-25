@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	const cartCount = document.querySelector('.cart-count');
 	const cartItemsContainer = document.getElementById('cartItems');
 	const cartSubtotal = document.getElementById('cartSubtotal');
-	const cartShipping = document.getElementById('cartShipping');
 	const cartTotal = document.getElementById('cartTotal');
 	const checkoutBtn = document.getElementById('checkoutBtn');
 	const addToCartButtons = document.querySelectorAll('.add-to-cart');
@@ -25,8 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			updateCart();
 
-			const cartOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'));
-			cartOffcanvas.show();
+			// Abrir el carrito automáticamente
+			setTimeout(() => {
+				const cartOffcanvasElement = document.getElementById('cartOffcanvas');
+				if (cartOffcanvasElement) {
+					const cartOffcanvas = new bootstrap.Offcanvas(cartOffcanvasElement);
+					cartOffcanvas.show();
+				}
+			}, 100);
 		});
 	});
 
@@ -48,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
 							<img src="${item.img}" alt="${item.name}" class="cart-item-img me-3">
 							<div>
 								<h6 class="mb-1">${item.name}</h6>
-								<p class="mb-1">Bs${item.price.toFixed(2)} x ${item.quantity}</p>
-								<p class="mb-0 text-primary">Bs${(item.price * item.quantity).toFixed(2)}</p>
+                                <p class="mb-1">Bs ${item.price.toFixed(2)} x ${item.quantity}</p>
+                                <p class="mb-0 text-primary">Bs ${(item.price * item.quantity).toFixed(2)}</p>
 							</div>
 						</div>
 						<div>
@@ -66,12 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-		const shipping = subtotal > 0 ? (subtotal > 5000 ? 0 : 250) : 0;
-		const total = subtotal + shipping;
+		const total = subtotal; // Sin envío, total = subtotal
 
-		cartSubtotal.textContent = `Bs${subtotal.toFixed(2)}`;
-		cartShipping.textContent = shipping === 0 ? 'Gratis' : `Bs${shipping.toFixed(2)}`;
-		cartTotal.textContent = `Bs${total.toFixed(2)}`;
+        cartSubtotal.textContent = `Bs ${subtotal.toFixed(2)}`;
+        cartTotal.textContent = `Bs ${total.toFixed(2)}`;
 
 		document.querySelectorAll('.remove-item').forEach(button => {
 			button.addEventListener('click', function() {
@@ -105,10 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			cart.forEach(item => {
 				const subtotal = item.price * item.quantity;
 				total += subtotal;
-				message += `- ${item.name} x${item.quantity}: Bs${subtotal.toFixed(2)}%0A`;
+                message += `- ${item.name} x${item.quantity}: Bs ${subtotal.toFixed(2)}%0A`;
 			});
-			message += `Total: Bs${total.toFixed(2)}`;
-			const waLink = `https://wa.me/78468355?text=${message}`;
+            message += `Total: Bs ${total.toFixed(2)}`;
+			const waLink = `https://wa.me/59178468355?text=${message}`;
 			checkoutBtn.setAttribute('href', waLink);
 			checkoutBtn.style.pointerEvents = 'auto';
 			checkoutBtn.style.opacity = '1';
