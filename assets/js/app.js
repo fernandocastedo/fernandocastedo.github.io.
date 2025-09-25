@@ -8,8 +8,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	const checkoutBtn = document.getElementById('checkoutBtn');
 	const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
-	addToCartButtons.forEach(button => {
-		button.addEventListener('click', function() {
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Evitar añadir si el producto está marcado como agotado
+            const card = this.closest('.product-card');
+            if (card && card.dataset.soldOut === 'true') {
+                return;
+            }
 			const id = this.getAttribute('data-id');
 			const name = this.getAttribute('data-name');
 			const price = parseFloat(this.getAttribute('data-price'));
