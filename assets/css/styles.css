@@ -173,45 +173,37 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 
 
 .products-carousel {
-	margin-top: 2rem;
-	overflow: hidden;
-	background: rgba(255, 255, 255, 0.1);
-	padding: 1rem;
-	border-radius: 8px;
-	border: 2px solid var(--accent-color); /* DEBUG - Borde verde sutil */
+	 margin-top: 2rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
 }
 
 .carousel-container {
-	display: flex !important;
-	gap: 1.5rem !important;
-	overflow-x: auto !important;
-	padding: 1rem 0 !important;
-	scroll-behavior: smooth !important;
-	-webkit-overflow-scrolling: touch !important;
-	min-height: 350px !important;
-	background: rgba(46, 204, 113, 0.1); /* DEBUG - Fondo verde muy sutil */
 	width: max-content !important;
-	flex-wrap: nowrap !important;
+        min-height: 350px !important;
 }
 
-.carousel-container::-webkit-scrollbar {
-	height: 8px;
+.products-carousel::-webkit-scrollbar {
+        height: 8px;
+}
+.products-carousel::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
 }
 
-.carousel-container::-webkit-scrollbar-track {
-	background: rgba(255, 255, 255, 0.1);
-	border-radius: 4px;
+.products-carousel::-webkit-scrollbar-thumb {
+        background: var(--accent-color);
+        border-radius: 4px;
 }
 
-.carousel-container::-webkit-scrollbar-thumb {
-	background: var(--accent-color);
-	border-radius: 4px;
+.products-carousel::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-secondary);
 }
-
-.carousel-container::-webkit-scrollbar-thumb:hover {
-	background: var(--accent-secondary);
-}
-
 .carousel-item {
 	flex: 0 0 320px !important;
 	min-width: 320px !important;
@@ -223,7 +215,7 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 
 .product-showcase-card {
 	background: var(--secondary-color) !important;
-	border: 2px solid var(--accent-color) !important; /* DEBUG - Borde verde más visible */
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
 	border-radius: 12px !important;
 	padding: 1.5rem !important;
 	text-align: center !important;
@@ -264,7 +256,6 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 	transition: transform 0.3s ease !important;
 	cursor: pointer !important;
 	border-radius: 8px !important;
-	border: 1px solid white !important; /* DEBUG - Borde blanco sutil */
 	display: block !important;
 	max-width: 100% !important;
 }
@@ -298,6 +289,18 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 
 .instagram-link i {
 	font-size: 1.2rem;
+}
+
+.footer-brand-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    font-weight: 700;
+}
+
+.accordion-body {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 
