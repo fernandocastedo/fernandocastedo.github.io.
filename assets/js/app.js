@@ -1,5 +1,39 @@
 // Cart functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Theme toggle
+    // document.documentElement => referencia directa al <html> (raíz del documento)
+    // Usamos esta referencia para leer/escribir atributos globales (p. ej., data-theme)
+    (function initTheme() {
+        const root = document.documentElement; // const = referencia no reasignable al <html>
+        const btn = document.getElementById('themeToggle'); // botón de la navbar para alternar tema
+        const stored = localStorage.getItem('theme'); // lee string persistente: 'light' | 'dark' | null
+        if (!stored) {
+            // First visit: default to light theme
+            root.setAttribute('data-theme', 'light'); // <html data-theme="light">
+            localStorage.setItem('theme', 'light');   // guarda preferencia para próximas visitas
+            if (btn) btn.innerHTML = '<i class="fas fa-sun"></i>'; // innerHTML: inserta ícono de sol
+        } else if (stored === 'light') {
+            root.setAttribute('data-theme', 'light');  // aplica tema claro desde preferencia guardada
+            if (btn) btn.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            // stored === 'dark'
+            if (btn) btn.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        if (btn) {
+            btn.addEventListener('click', () => {
+                const isLight = root.getAttribute('data-theme') === 'light'; // lee atributo del <html>
+                const next = isLight ? 'dark' : 'light'; // alterna destino
+                if (next === 'light') {
+                    root.setAttribute('data-theme', 'light'); // aplica claro
+                    btn.innerHTML = '<i class="fas fa-sun"></i>'; // icono sol
+                } else {
+                    root.removeAttribute('data-theme'); // sin atributo => CSS usa tema oscuro por defecto
+                    btn.innerHTML = '<i class="fas fa-moon"></i>'; // icono luna
+                }
+                localStorage.setItem('theme', next === 'light' ? 'light' : 'dark'); // persiste nueva preferencia
+            });
+        }
+    })();
 	const cart = [];
 	const cartCount = document.querySelector('.cart-count');
 	const cartItemsContainer = document.getElementById('cartItems');

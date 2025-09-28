@@ -5,7 +5,18 @@
 	--accent-secondary: #27ae60;
 	--text-light: #f5f5f5;
 	--text-dark: #222;
+	--navbar-bg-color: rgba(26, 26, 26, 0.9);
+	--muted-text-color: rgba(224, 224, 224, 0.9);
 	--transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+:root[data-theme="light"] {
+	--primary-color: #111111;
+	--secondary-color: #fafafa;
+	--text-light: #111111;
+	--text-dark: #222222;
+	--navbar-bg-color: rgba(255, 255, 255, 0.92);
+	--muted-text-color: rgba(0, 0, 0, 0.7);
 }
 
 @keyframes fadeIn {
@@ -37,8 +48,11 @@ h1, h2, h3, h4, h5 {
 }
 
 .navbar {
-	background-color: rgba(26, 26, 26, 0.9) !important;
+	background-color: var(--navbar-bg-color) !important;
 	border-bottom: 1px solid var(--primary-color);
+}
+:root[data-theme="light"] .navbar .navbar-toggler-icon {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22' /%3e%3c/svg%3e");
 }
 
 .navbar-brand {
@@ -66,13 +80,119 @@ h1, h2, h3, h4, h5 {
 
 .nav-link:hover { color: var(--primary-color) !important; }
 
+/* Navbar buttons and icons adapt in light theme */
+.navbar .btn-outline-light { color: var(--text-light); border-color: var(--text-light); }
+:root[data-theme="light"] .navbar .btn-outline-light { color: #111 !important; border-color: #111 !important; }
+:root[data-theme="light"] .navbar .btn-outline-light:hover { background-color: #111 !important; color: #fff !important; }
+:root[data-theme="light"] .navbar .nav-link { color: #111 !important; }
+:root[data-theme="light"] .navbar .nav-link:hover { color: #000 !important; }
+:root[data-theme="light"] .navbar i { color: #111 !important; }
+
+/* Product add-to-cart and outline buttons in light theme */
+:root[data-theme="light"] .btn.btn-outline-light { color: #111 !important; border-color: #111 !important; }
+:root[data-theme="light"] .btn.btn-outline-light:hover { background-color: #111 !important; color: #fff !important; }
+:root[data-theme="light"] .product-card .add-to-cart.btn-outline-light { color: #111 !important; border-color: #111 !important; }
+:root[data-theme="light"] .product-card .add-to-cart.btn-outline-light:hover { background-color: #111 !important; color: #fff !important; }
+
 .hero-section {
 	background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../../imagenes/Productos/NCK Heart Gold.png');
 	background-size: cover;
 	background-position: center;
 	height: 80vh;
+	position: relative;
+	overflow: hidden;
 }
 
+:root[data-theme="light"] .hero-section {
+	background: linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)), url('../../imagenes/Productos/NCK Heart Gold.png');
+	background-size: cover;
+	background-position: center;
+}
+
+
+/* Cursor-following fluid glass bubble over hero image */
+.cursor-bubble {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	--bubble-size: 220px;
+	/* Mask limits the visible area to a soft circle around the cursor */
+	-webkit-mask: radial-gradient(var(--bubble-size) at var(--x, -1000px) var(--y, -1000px), #000 60%, transparent 62%);
+	mask: radial-gradient(var(--bubble-size) at var(--x, -1000px) var(--y, -1000px), #000 60%, transparent 62%);
+	/* The backdrop-filter creates the glassy distortion of the background image */
+	backdrop-filter: blur(14px) saturate(140%);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+	background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 576px) {
+	.cursor-bubble { --bubble-size: 160px; }
+}
+
+/* (no rim/highlight layers in the simpler version) */
+
+
+/* Fluid Glass Hero overlay */
+.hero-overlay {
+	position: relative;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.fluid-glass {
+	max-width: 720px;
+	width: 100%;
+	padding: 2rem 2.5rem;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	backdrop-filter: blur(10px) saturate(120%);
+	-webkit-backdrop-filter: blur(10px) saturate(120%);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+	animation: fadeIn 0.8s ease both;
+}
+
+.fluid-glass h1 {
+	letter-spacing: 1px;
+	text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.fluid-glass p {
+	color: rgba(255,255,255,0.9);
+}
+
+/* Decorative fluid blobs */
+.blob {
+	position: absolute;
+	filter: blur(40px);
+	opacity: 0.6;
+	border-radius: 50%;
+	animation: float 6s ease-in-out infinite;
+}
+
+.blob-1 {
+	width: 240px;
+	height: 240px;
+	left: 10%;
+	top: 20%;
+	background: radial-gradient( circle at 30% 30%, rgba(46,204,113,0.9), rgba(46,204,113,0.2) 60% );
+}
+
+.blob-2 {
+	width: 280px;
+	height: 280px;
+	right: 12%;
+	bottom: 15%;
+	background: radial-gradient( circle at 70% 70%, rgba(255,255,255,0.6), rgba(255,255,255,0.1) 60% );
+}
+
+@media (max-width: 576px) {
+	.fluid-glass {
+		padding: 1.25rem 1.5rem;
+	}
+}
 
 
 .btn-gold {
@@ -102,7 +222,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .card-body { color: var(--text-light); }
-.card-text { color: rgba(224, 224, 224, 0.9); }
+.card-text { color: var(--muted-text-color); }
 
 .product-card:hover {
 	transform: translateY(-10px);
@@ -119,8 +239,7 @@ h1, h2, h3, h4, h5 {
 	transition: transform 0.5s ease;
 	padding: 10px;
 }
-
-.product-card:hover .product-img { transform: scale(1.05); }
+:root[data-theme="light"] .product-img { background-color: rgba(0, 0, 0, 0.03); }
 
 .product-title { font-weight: 600; margin-top: 15px; color: var(--text-light); }
 .product-price { color: var(--primary-color); font-weight: 700; font-size: 1.2rem; }
@@ -169,6 +288,9 @@ h1, h2, h3, h4, h5 {
 footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var(--primary-color); }
 .footer-links a { color: var(--text-light); text-decoration: none; transition: color 0.3s ease; }
 .footer-links a:hover { color: var(--primary-color); }
+:root[data-theme="light"] footer { background-color: #f7f7f7; }
+.footer-links a { color: var(--text-light); text-decoration: none; transition: color 0.3s ease; }
+.footer-links a:hover { color: var(--primary-color); }
 
 .social-icon { color: var(--text-light); font-size: 1.5rem; margin-right: 15px; transition: color 0.3s ease; }
 .social-icon:hover { color: var(--primary-color); }
@@ -183,6 +305,8 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 
 .offcanvas { background-color: var(--secondary-color); color: var(--text-light); }
 .offcanvas-header { border-bottom: 1px solid rgba(212, 175, 55, 0.3); }
+:root[data-theme="light"] .offcanvas { border-left: 1px solid rgba(0,0,0,0.12); }
+:root[data-theme="light"] .bg-dark { background-color: #f2f2f2 !important; color: #111 !important; }
 
 .cart-item { border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding: 15px 0; }
 .cart-item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 5px; }
@@ -210,7 +334,7 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 	background-color: transparent; color: white; border-color: var(--primary-color);
 	box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
 }
-
+:root[data-theme="light"] .newsletter-input { color: #111; border-color: #111; }
 
 
 .products-carousel {
@@ -223,6 +347,7 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
 }
+:root[data-theme="light"] .products-carousel { background: rgba(0, 0, 0, 0.05); }
 
 .carousel-container {
 	width: max-content !important;
@@ -269,6 +394,7 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 	visibility: visible !important;
 	opacity: 1 !important;
 }
+:root[data-theme="light"] .product-showcase-card { border: 1px solid rgba(0, 0, 0, 0.12) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; }
 
 .product-showcase-card:hover {
 	transform: translateY(-5px);
@@ -321,6 +447,7 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 	transition: all 0.3s ease;
 	backdrop-filter: blur(5px);
 }
+:root[data-theme="light"] .instagram-link { background: rgba(255,255,255,0.9); color: #111; }
 
 .instagram-link:hover {
 	background: var(--accent-color);
@@ -343,6 +470,7 @@ footer { background-color: #111; padding: 50px 0 20px; border-top: 1px solid var
 .accordion-body {
     color: rgba(255, 255, 255, 0.8);
 }
+:root[data-theme="light"] .accordion-body { color: rgba(0, 0, 0, 0.75); }
 
 
 
