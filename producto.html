@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto - VAN LOTUS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .detail-gallery img { max-height: 480px; object-fit: contain; }
+        .thumbs img { height: 90px; width: 90px; object-fit: cover; cursor: pointer; border: 1px solid #000; border-radius: 6px; }
+        .thumbs img.active { outline: 2px solid #000; }
+    </style>
+    <script defer src="assets/js/products.data.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const params = new URLSearchParams(location.search);
+        const id = params.get('id');
+        const product = (window.PRODUCTS || []).find(p => p.id === id);
+
+        const container = document.getElementById('productDetail');
+        if (!product) {
+            container.innerHTML = '<div class="text-center py-5"><h2>Producto no encontrado</h2><a href="index.html#colecciones" class="btn btn-outline-light mt-3">Volver</a></div>';
+            return;
+        }
+
+        document.title = product.name + ' - VAN LOTUS';
+
+        container.innerHTML = `
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-6">
+                    <div class="detail-gallery mb-3 text-center">
+                        <img id="mainImg" src="${product.mainImage}" alt="${product.name}" class="img-fluid rounded border">
+                    </div>
+                    <div class="thumbs d-flex gap-2 flex-wrap">
+                        ${product.images.map((src, i) => `<img src="${src}" alt="thumb ${i+1}" data-src="${src}" class="rounded ${i===0 ? 'active' : ''}">`).join('')}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="mb-2">${product.name}</h1>
+                    <div class="mb-3"><span class="product-price">Bs ${product.price}</span></div>
+                    <p class="mb-4">${product.description || ''}</p>
+                    <div class="d-flex gap-2">
+                        ${product.soldOut ? `
+                            <button class="btn btn-outline-light" disabled>Agotado</button>
+                        ` : `
+                            <button class="btn btn-outline-light add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-img="${product.mainImage}">Añadir al carrito</button>
+                        `}
+                        <a class="btn btn-gold" href="index.html#colecciones">Seguir viendo</a>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const mainImg = document.getElementById('mainImg');
+        document.querySelectorAll('.thumbs img').forEach(img => {
+            img.addEventListener('click', () => {
+                document.querySelectorAll('.thumbs img').forEach(i => i.classList.remove('active'));
+                img.classList.add('active');
+                mainImg.src = img.dataset.src;
+            });
+        });
+    });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" style="animation: pulse 3s infinite; overflow: visible;">
+                <img src="imagenes/Logo/VAN LOTUS blanco.png" alt="VAN LOTUS" style="height: 50px; transform: scale(1.5);">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#colecciones">Colecciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#nosotros">Nosotros</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-outline-light position-relative cart-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span class="cart-count">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <button id="themeToggle" class="btn btn-outline-light" type="button" aria-label="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-5">
+        <div class="container">
+            <div id="productDetail"></div>
+        </div>
+    </main>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="cartOffcanvasLabel">Tu Carrito</h5>
+            <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-outline-danger btn-sm me-2" id="clearCartBtn" title="Vaciar carrito" aria-label="Vaciar carrito">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="offcanvas-body">
+            <div id="cartItems" class="mb-4">
+                <p class="text-center">Tu carrito está vacío</p>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <h6>Subtotal:</h6>
+                <h6 id="cartSubtotal">Bs 0.00</h6>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+                <h5 class="cart-total">Total:</h5>
+                <h5 class="cart-total" id="cartTotal">Bs 0.00</h5>
+            </div>
+            <a class="btn btn-gold w-100 mb-3" id="checkoutBtn" target="_blank" rel="noopener noreferrer" style="pointer-events: none; opacity: 0.7;">Proceder al pago por WhatsApp</a>
+            <button class="btn btn-outline-light w-100" data-bs-dismiss="offcanvas">Seguir comprando</button>
+        </div>
+    </div>
+</body>
+</html>
+
+

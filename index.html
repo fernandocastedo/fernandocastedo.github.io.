@@ -9,7 +9,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -303,12 +303,12 @@
                 <!-- Llavero lazo doble plateado-->
                 <div class="col-md-3 mb-4">
                     <div class="card product-card h-100">
-                        <img src="imagenes/Productos/Llavero lazo doble.jpg" class="card-img-top product-img" alt="Llavero lazo doble plateado">
+                        <img src="imagenes/Productos/Llavero Lazo Doble.jpg" class="card-img-top product-img" alt="Llavero lazo doble plateado">
                         <div class="card-body">
                             <h5 class="card-title product-title">Llavero lazo doble plateado</h5>
                             <span class="product-price">Bs 35</span>
                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                <button class="btn btn-sm btn-outline-light add-to-cart" data-id="22" data-name="Llavero lazo doble plateado" data-price="35" data-img="imagenes/Productos/Llavero lazo doble plateado.jpg">Añadir al carrito</button>
+                                <button class="btn btn-sm btn-outline-light add-to-cart" data-id="22" data-name="Llavero lazo doble plateado" data-price="35" data-img="imagenes/Productos/Llavero Lazo Doble.jpg">Añadir al carrito</button>
                             </div>
                         </div>
                     </div>
@@ -316,12 +316,12 @@
                 <!-- Llavero lazo doble blanco-->
                 <div class="col-md-3 mb-4">
                     <div class="card product-card h-100">
-                        <img src="imagenes/Productos/Llavero lazo doble blanco.jpg" class="card-img-top product-img" alt="Llavero lazo doble blanco">
+                        <img src="imagenes/Productos/Llavero Lazo doble Blanco.jpg" class="card-img-top product-img" alt="Llavero lazo doble blanco">
                         <div class="card-body">
                             <h5 class="card-title product-title">Llavero lazo doble blanco</h5>
                             <span class="product-price">Bs 35</span>
                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                <button class="btn btn-sm btn-outline-light add-to-cart" data-id="22" data-name="Llavero lazo doble blanco" data-price="35" data-img="imagenes/Productos/Llavero lazo doble blanco.jpg">Añadir al carrito</button>
+                                <button class="btn btn-sm btn-outline-light add-to-cart" data-id="22" data-name="Llavero lazo doble blanco" data-price="35" data-img="imagenes/Productos/Llavero Lazo doble Blanco.jpg">Añadir al carrito</button>
                             </div>
                         </div>
                     </div>
@@ -407,6 +407,7 @@
                     </div>
 
                 </div>
+                <div class="carousel-dots" id="carouselDots"></div>
             </div>
         </div>
     </section>
@@ -579,7 +580,12 @@
     <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="cartOffcanvasLabel">Tu Carrito</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-outline-danger btn-sm me-2" id="clearCartBtn" title="Vaciar carrito" aria-label="Vaciar carrito">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
         </div>
         <div class="offcanvas-body">
             <div id="cartItems" class="mb-4">
@@ -601,6 +607,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="assets/js/products.data.js" defer></script>
     <script src="assets/js/app.js" defer></script>
     
     <!-- Cursor bubble effect over hero image -->
@@ -624,27 +631,58 @@
         })();
     </script>
     
-    <!-- Debug script for carousel -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const carousel = document.querySelector('.products-carousel');
-            const carouselContainer = document.querySelector('.carousel-container');
-            const carouselItems = document.querySelectorAll('.carousel-item');
-            
-            console.log('Carousel debug:');
-            console.log('- Carousel element:', carousel);
-            console.log('- Container:', carouselContainer);
-            console.log('- Items count:', carouselItems.length);
-            
-            if (carouselItems.length > 0) {
-                carouselItems.forEach((item, index) => {
-                    console.log(`- Item ${index + 1}:`, item);
-                    const card = item.querySelector('.product-showcase-card');
-                    const img = item.querySelector('.product-showcase-img');
-                    console.log(`  - Card:`, card);
-                    console.log(`  - Image:`, img);
-                });
+            const viewport = document.querySelector('.products-carousel');
+            const container = document.querySelector('.carousel-container');
+            const items = Array.from(document.querySelectorAll('.carousel-item'));
+            const dotsWrap = document.getElementById('carouselDots');
+            if (!viewport || !container || items.length === 0 || !dotsWrap) return;
+
+            // Build dots
+            dotsWrap.innerHTML = '';
+            const dots = items.map((_, i) => {
+                const d = document.createElement('button');
+                d.type = 'button';
+                d.className = 'carousel-dot';
+                d.setAttribute('aria-label', `Ir al item ${i+1}`);
+                d.addEventListener('click', () => scrollToIndex(i));
+                dotsWrap.appendChild(d);
+                return d;
+            });
+
+            function setActiveByScroll(){
+                const scrollLeft = viewport.scrollLeft;
+                const itemWidth = items[0].offsetWidth + parseFloat(getComputedStyle(items[0]).marginRight || '0');
+                const idx = Math.round(scrollLeft / itemWidth);
+                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             }
+
+            function scrollToIndex(i){
+                const itemWidth = items[0].offsetWidth + parseFloat(getComputedStyle(items[0]).marginRight || '0');
+                viewport.scrollTo({ left: i * itemWidth, behavior: 'smooth' });
+            }
+
+            // Autoplay
+            let current = 0;
+            function next(){
+                current = (current + 1) % items.length;
+                scrollToIndex(current);
+            }
+            const intervalMs = 3500;
+            let timer = setInterval(next, intervalMs);
+            function resetTimer(){
+                clearInterval(timer);
+                timer = setInterval(next, intervalMs);
+            }
+
+            viewport.addEventListener('scroll', () => { setActiveByScroll(); });
+            viewport.addEventListener('pointerdown', () => { clearInterval(timer); });
+            viewport.addEventListener('pointerup', resetTimer);
+            dotsWrap.addEventListener('click', resetTimer);
+
+            // Init
+            setActiveByScroll();
         });
     </script>
 </body>
