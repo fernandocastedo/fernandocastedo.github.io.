@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 message += `- ${item.name} x${item.quantity}: Bs ${subtotal.toFixed(2)}%0A`;
 			});
             message += `Total: Bs ${total.toFixed(2)}`;
-			const waLink = `https://wa.me/59178468355?text=${message}`;
+			const waLink = `https://wa.me/59177892158?text=${message}`;
 			checkoutBtn.setAttribute('href', waLink);
 			checkoutBtn.style.pointerEvents = 'auto';
 			checkoutBtn.style.opacity = '1';

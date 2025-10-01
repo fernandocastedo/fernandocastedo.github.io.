@@ -67,7 +67,7 @@ window.PRODUCTS = [
     {
         id: "nck-garasu",
         name: "NCK Garasu",
-        price: 65,
+        price: 120,
         mainImage: "imagenes/Productos/NCK Garasu.PNG",
         images: [
             "imagenes/Productos/NCK Garasu.PNG",
@@ -169,9 +169,9 @@ window.PRODUCTS = [
         id: "llavero-corazon",
         name: "Llavero con Corazón",
         price: 35,
-        mainImage: "imagenes/Productos/Llavero con Corazon.jpg",
+        mainImage: "imagenes/Productos/Llavero con Corazon.png",
         images: [
-            "imagenes/Productos/Llavero con Corazon.jpg",
+            "imagenes/Productos/Llavero con Corazon.png",
             "imagenes/Productos/Llavero con Corazon.png"
         ],
         description: "Llavero con dije de corazón, acabado pulido."
@@ -180,9 +180,9 @@ window.PRODUCTS = [
         id: "llavero-lazo-doble-plateado",
         name: "Llavero lazo doble plateado",
         price: 35,
-        mainImage: "imagenes/Productos/Llavero Lazo Doble.jpg",
+        mainImage: "imagenes/Productos/Llavero Lazo Doble Platedo.png",
         images: [
-            "imagenes/Productos/Llavero Lazo Doble.jpg",
+            "imagenes/Productos/Llavero Lazo Doble Platedo.png",
             "imagenes/Productos/Llavero Lazo Doble.png"
         ],
         description: "Lazo doble en tono plateado."
@@ -191,9 +191,9 @@ window.PRODUCTS = [
         id: "llavero-lazo-doble-blanco",
         name: "Llavero lazo doble blanco",
         price: 35,
-        mainImage: "imagenes/Productos/Llavero Lazo doble Blanco.jpg",
+        mainImage: "imagenes/Productos/Llavero Lazo doble Blanco.png",
         images: [
-            "imagenes/Productos/Llavero Lazo doble Blanco.jpg",
+            "imagenes/Productos/Llavero Lazo doble Blanco.png",
             "imagenes/Productos/Llavero Lazo doble Blanco y fondo blancopng.png"
         ],
         description: "Lazo doble blanco, estilo limpio."
