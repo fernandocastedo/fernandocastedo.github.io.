@@ -6,9 +6,9 @@ window.PRODUCTS = [
         id: "collar-labubu-green",
         name: "Collar Labubu Green",
         price: 60,
-        mainImage: "imagenes/Productos/Collar labubu green.jpg",
+        mainImage: "imagenes/Productos/Collar labubu green.png",
         images: [
-            "imagenes/Productos/Collar labubu green.jpg"
+            "imagenes/Productos/Collar labubu green.png"
         ],
         description: "Collar Labubu color verde con detalles en acero inoxidable."
     },
@@ -71,7 +71,7 @@ window.PRODUCTS = [
         mainImage: "imagenes/Productos/NCK Garasu.PNG",
         images: [
             "imagenes/Productos/NCK Garasu.PNG",
-            "imagenes/Productos/NCK Garasu Foto 2.jpg"
+            "imagenes/Productos/NCK Garasu Foto 2.png"
         ],
         description: "Pieza inspirada en vidrio, detalles artesanales."
     },
@@ -109,9 +109,9 @@ window.PRODUCTS = [
         id: "alternativa-hard-spikes",
         name: "Alternativa Hard Spikes",
         price: 70,
-        mainImage: "imagenes/Productos/Alternativa Hard Spikes.jpg",
+        mainImage: "imagenes/Productos/Alternativa Hard Spikes.png",
         images: [
-            "imagenes/Productos/Alternativa Hard Spikes.jpg"
+            "imagenes/Productos/Alternativa Hard Spikes.png"
         ],
         description: "Variante en acero inoxidable con diseño de picos."
     },
@@ -149,19 +149,19 @@ window.PRODUCTS = [
         id: "clip-orquideas-mediano",
         name: "Clip de Orquideas Mediano",
         price: 40,
-        mainImage: "imagenes/Productos/Clip de orquideas mediano.jpeg",
+        mainImage: "imagenes/Productos/Clip de orquideas mediano.png",
         images: [
-            "imagenes/Productos/Clip de orquideas mediano.jpeg"
+            "imagenes/Productos/Clip de orquideas mediano.png"
         ],
         description: "Clip mediano con motivo de orquídeas."
     },
     {
-        id: "clips-orquideas-pequenas",
-        name: "Clips de Orquideas Pequeñas",
+        id: "clips-orquideas-pequeñas",
+        name: "Clips de Orquideas pequeñas",
         price: 35,
-        mainImage: "imagenes/Productos/Clips de orquideas pequeñas.jpeg",
+        mainImage: "imagenes/Productos/Clips de orquideas pequeñas.png",
         images: [
-            "imagenes/Productos/Clips de orquideas pequeñas.jpeg"
+            "imagenes/Productos/Clips de orquideas pequeñas.png"
         ],
         description: "Juego de clips pequeños con orquídeas."
     },
@@ -180,9 +180,9 @@ window.PRODUCTS = [
         id: "llavero-lazo-doble-plateado",
         name: "Llavero lazo doble plateado",
         price: 35,
-        mainImage: "imagenes/Productos/Llavero Lazo Doble Platedo.png",
+        mainImage: "imagenes/Productos/Llavero Lazo Doble Plateado.png",
         images: [
-            "imagenes/Productos/Llavero Lazo Doble Platedo.png",
+            "imagenes/Productos/Llavero Lazo Doble Plateado.png",
             "imagenes/Productos/Llavero Lazo Doble.png"
         ],
         description: "Lazo doble en tono plateado."
