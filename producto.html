@@ -11,6 +11,11 @@
         .detail-gallery img { max-height: 480px; object-fit: contain; }
         .thumbs img { height: 90px; width: 90px; object-fit: cover; cursor: pointer; border: 1px solid #000; border-radius: 6px; }
         .thumbs img.active { outline: 2px solid #000; }
+        .product-meta { font-family: 'Inter', sans-serif; }
+        .product-meta dt { width: 110px; color: var(--muted-text-color); }
+        .product-meta dd { margin-left: 0; }
+        .variant-badges .badge { cursor: pointer; }
+        .variant-badges .badge.active { background: var(--accent-color); }
     </style>
     <script defer src="assets/js/products.data.js"></script>
     <script defer src="assets/js/app.js"></script>
@@ -28,25 +33,38 @@
 
         document.title = product.name + ' - VAN LOTUS';
 
+        const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
+        const galleryImages = hasVariants ? (product.variants[0].images || []) : (product.images || []);
+        const initialPrice = hasVariants && product.variants[0].price ? product.variants[0].price : product.price;
+
         container.innerHTML = `
             <div class="row g-4 align-items-start">
                 <div class="col-lg-6">
                     <div class="detail-gallery mb-3 text-center">
-                        <img id="mainImg" src="${product.mainImage}" alt="${product.name}" class="img-fluid rounded border">
+                        <img id="mainImg" src="${(galleryImages[0] || product.mainImage)}" alt="${product.name}" class="img-fluid rounded border">
                     </div>
                     <div class="thumbs d-flex gap-2 flex-wrap">
-                        ${product.images.map((src, i) => `<img src="${src}" alt="thumb ${i+1}" data-src="${src}" class="rounded ${i===0 ? 'active' : ''}">`).join('')}
+                        ${galleryImages.map((src, i) => `<img src="${src}" alt="thumb ${i+1}" data-src="${src}" class="rounded ${i===0 ? 'active' : ''}">`).join('')}
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <h1 class="mb-2">${product.name}</h1>
-                    <div class="mb-3"><span class="product-price">Bs ${product.price}</span></div>
-                    <p class="mb-4">${product.description || ''}</p>
+                    <div class="mb-3"><span class="product-price">Bs ${initialPrice}</span></div>
+                    <div class="mb-3">
+                        ${hasVariants ? `<div class="variant-badges d-flex flex-wrap gap-2 mb-2">
+                            ${product.variants.map((v, i) => `<span class="badge bg-secondary ${i===0 ? 'active' : ''}" data-variant="${v.key}">${v.name}</span>`).join('')}
+                        </div>` : ''}
+                        <dl class="row product-meta small">
+                            ${product.type ? `<dt class="col-sm-3">Tipo</dt><dd class="col-sm-9">${product.type}</dd>` : ''}
+                            ${product.size?.length ? `<dt class="col-sm-3">Tamaño</dt><dd class="col-sm-9">${product.size.length}</dd>` : ''}
+                        </dl>
+                        <p class="mb-0">${product.description || ''}</p>
+                    </div>
                     <div class="d-flex gap-2">
                         ${product.soldOut ? `
                             <button class="btn btn-outline-light" disabled>Agotado</button>
                         ` : `
-                            <button class="btn btn-outline-light add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-img="${product.mainImage}">Añadir al carrito</button>
+                            <button class="btn btn-outline-light add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${initialPrice}" data-img="${(galleryImages[0] || product.mainImage)}">Añadir al carrito</button>
                         `}
                         <a class="btn btn-gold" href="index.html#colecciones">Seguir viendo</a>
                     </div>
@@ -62,6 +80,42 @@
                 mainImg.src = img.dataset.src;
             });
         });
+
+        if (hasVariants) {
+            const badges = document.querySelectorAll('.variant-badges .badge');
+            badges.forEach((badge, idx) => {
+                badge.addEventListener('click', () => {
+                    badges.forEach(b => b.classList.remove('active'));
+                    badge.classList.add('active');
+                    const v = product.variants[idx];
+                    const thumbs = document.querySelector('.thumbs');
+                    const imgs = (v.images || []);
+                    mainImg.src = imgs[0] || product.mainImage;
+                    thumbs.innerHTML = imgs.map((src, i) => `<img src="${src}" alt="thumb ${i+1}" data-src="${src}" class="rounded ${i===0 ? 'active' : ''}">`).join('');
+                    thumbs.querySelectorAll('img').forEach(t => {
+                        t.addEventListener('click', () => {
+                            thumbs.querySelectorAll('img').forEach(i => i.classList.remove('active'));
+                            t.classList.add('active');
+                            mainImg.src = t.dataset.src;
+                        });
+                    });
+                    // Actualizar meta si la variante define tamaño/descr.
+                    const metaDl = document.querySelector('.product-meta');
+                    const sizeRow = metaDl && metaDl.querySelector('dd:nth-of-type(2)');
+                    if (sizeRow && v.size?.length) sizeRow.textContent = v.size.length;
+                    const descP = document.querySelector('.col-lg-6 p.mb-0');
+                    if (descP) descP.textContent = v.description || product.description || '';
+                    // Actualizar precio y datos del botón según variante
+                    const priceEl = document.querySelector('.product-price');
+                    if (priceEl) priceEl.textContent = `Bs ${v.price ? v.price : product.price}`;
+                    const addBtn = document.querySelector('.add-to-cart');
+                    if (addBtn) {
+                        addBtn.setAttribute('data-price', v.price ? v.price : product.price);
+                        addBtn.setAttribute('data-img', imgs[0] || product.mainImage);
+                    }
+                });
+            });
+        }
     });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
