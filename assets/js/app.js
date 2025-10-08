@@ -51,11 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			const parsed = JSON.parse(raw);
 			if (!Array.isArray(parsed)) return;
 			parsed.forEach(storedItem => {
-				if (!storedItem || !storedItem.id) return;
+				if (!storedItem || (!storedItem.id && !storedItem.key)) return;
 				const price = typeof storedItem.price === 'number' ? storedItem.price : parseFloat(storedItem.price) || 0;
 				const quantity = parseInt(storedItem.quantity, 10) || 1;
+				const key = storedItem.key || storedItem.uid || String(storedItem.id);
 				cart.push({
-					id: String(storedItem.id),
+					key,
+					id: String(storedItem.id || ''),
+					uid: storedItem.uid || '',
 					name: storedItem.name || '',
 					price,
 					img: storedItem.img || '',
@@ -110,15 +113,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 			const id = this.getAttribute('data-id');
+			const uid = this.getAttribute('data-uid') || '';
 			const name = this.getAttribute('data-name');
 			const price = parseFloat(this.getAttribute('data-price'));
 			const img = this.getAttribute('data-img');
 
-			const existingItem = cart.find(item => item.id === id);
+			// Si hay uid usamos ese para diferenciar variantes; si no, usamos id simple
+			const key = uid || id;
+			const existingItem = cart.find(item => item.key === key);
 			if (existingItem) {
 				existingItem.quantity += 1;
 			} else {
-				cart.push({ id, name, price, img, quantity: 1 });
+				cart.push({ key, id, uid, name, price, img, quantity: 1 });
 			}
 
 			updateCart();
@@ -165,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							</div>
 						</div>
 						<div>
-							<button class="btn btn-sm btn-outline-light remove-item" data-id="${item.id}">
+							<button class="btn btn-sm btn-outline-light remove-item" data-key="${item.key}">
 								<i class="fas fa-times"></i>
 							</button>
 						</div>
@@ -183,10 +189,10 @@ document.addEventListener('DOMContentLoaded', function() {
         cartSubtotal.textContent = `Bs ${subtotal.toFixed(2)}`;
         cartTotal.textContent = `Bs ${total.toFixed(2)}`;
 
-		document.querySelectorAll('.remove-item').forEach(button => {
+			document.querySelectorAll('.remove-item').forEach(button => {
 			button.addEventListener('click', function() {
-				const id = this.getAttribute('data-id');
-				const itemIndex = cart.findIndex(item => item.id === id);
+					const key = this.getAttribute('data-key');
+                const itemIndex = cart.findIndex(item => item.key === key);
 				if (itemIndex !== -1) {
 					cart.splice(itemIndex, 1);
 					updateCart();

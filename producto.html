@@ -36,6 +36,10 @@
         const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
         const galleryImages = hasVariants ? (product.variants[0].images || []) : (product.images || []);
         const initialPrice = hasVariants && product.variants[0].price ? product.variants[0].price : product.price;
+        const initialVariantKey = hasVariants ? (product.variants[0].key || 'v0') : 'default';
+        const initialImg = (galleryImages[0] || product.mainImage);
+        const initialUid = `${product.id}|${initialVariantKey}|${initialPrice}|${initialImg}`;
+        const initialName = hasVariants ? `${product.name} — ${product.variants[0].name}` : product.name;
 
         container.innerHTML = `
             <div class="row g-4 align-items-start">
@@ -64,7 +68,7 @@
                         ${product.soldOut ? `
                             <button class="btn btn-outline-light" disabled>Agotado</button>
                         ` : `
-                            <button class="btn btn-outline-light add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${initialPrice}" data-img="${(galleryImages[0] || product.mainImage)}">Añadir al carrito</button>
+                            <button class="btn btn-outline-light add-to-cart" data-id="${product.id}" data-uid="${initialUid}" data-name="${initialName}" data-price="${initialPrice}" data-img="${initialImg}">Añadir al carrito</button>
                         `}
                         <a class="btn btn-gold" href="index.html#colecciones">Seguir viendo</a>
                     </div>
@@ -90,7 +94,8 @@
                     const v = product.variants[idx];
                     const thumbs = document.querySelector('.thumbs');
                     const imgs = (v.images || []);
-                    mainImg.src = imgs[0] || product.mainImage;
+                    const variantImg0 = imgs[0] || product.mainImage;
+                    mainImg.src = variantImg0;
                     thumbs.innerHTML = imgs.map((src, i) => `<img src="${src}" alt="thumb ${i+1}" data-src="${src}" class="rounded ${i===0 ? 'active' : ''}">`).join('');
                     thumbs.querySelectorAll('img').forEach(t => {
                         t.addEventListener('click', () => {
@@ -110,8 +115,13 @@
                     if (priceEl) priceEl.textContent = `Bs ${v.price ? v.price : product.price}`;
                     const addBtn = document.querySelector('.add-to-cart');
                     if (addBtn) {
-                        addBtn.setAttribute('data-price', v.price ? v.price : product.price);
-                        addBtn.setAttribute('data-img', imgs[0] || product.mainImage);
+                        const variantKey = v.key || String(idx);
+                        const variantPrice = v.price ? v.price : product.price;
+                        const variantImg = variantImg0;
+                        addBtn.setAttribute('data-price', variantPrice);
+                        addBtn.setAttribute('data-img', variantImg);
+                        addBtn.setAttribute('data-name', `${product.name} — ${v.name || variantKey}`);
+                        addBtn.setAttribute('data-uid', `${product.id}|${variantKey}|${variantPrice}|${variantImg}`);
                     }
                 });
             });
