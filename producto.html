@@ -34,7 +34,13 @@
         document.title = product.name + ' - VAN LOTUS';
 
         const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
-        const galleryImages = hasVariants ? (product.variants[0].images || []) : (product.images || []);
+        function withAtLeastTwoImages(arr, fallback){
+            const imgs = Array.isArray(arr) ? arr.slice() : [];
+            if (imgs.length === 0 && fallback) imgs.push(fallback);
+            if (imgs.length === 1) imgs.push(imgs[0]);
+            return imgs;
+        }
+        const galleryImages = hasVariants ? withAtLeastTwoImages((product.variants[0].images || []), product.mainImage) : withAtLeastTwoImages((product.images || []), product.mainImage);
         const initialPrice = hasVariants && product.variants[0].price ? product.variants[0].price : product.price;
         const initialVariantKey = hasVariants ? (product.variants[0].key || 'v0') : 'default';
         const initialImg = (galleryImages[0] || product.mainImage);
@@ -77,23 +83,31 @@
         `;
 
         const mainImg = document.getElementById('mainImg');
+        const addBtnInit = document.querySelector('.add-to-cart');
         document.querySelectorAll('.thumbs img').forEach(img => {
             img.addEventListener('click', () => {
                 document.querySelectorAll('.thumbs img').forEach(i => i.classList.remove('active'));
                 img.classList.add('active');
                 mainImg.src = img.dataset.src;
+                if (addBtnInit) {
+                    const uid = `${product.id}|${initialVariantKey}|${initialPrice}|${img.dataset.src}`;
+                    addBtnInit.setAttribute('data-img', img.dataset.src);
+                    addBtnInit.setAttribute('data-uid', uid);
+                }
             });
         });
 
         if (hasVariants) {
             const badges = document.querySelectorAll('.variant-badges .badge');
+            let currentVariantIndex = 0;
             badges.forEach((badge, idx) => {
                 badge.addEventListener('click', () => {
                     badges.forEach(b => b.classList.remove('active'));
                     badge.classList.add('active');
                     const v = product.variants[idx];
+                    currentVariantIndex = idx;
                     const thumbs = document.querySelector('.thumbs');
-                    const imgs = (v.images || []);
+                    const imgs = withAtLeastTwoImages((v.images || []), product.mainImage);
                     const variantImg0 = imgs[0] || product.mainImage;
                     mainImg.src = variantImg0;
                     thumbs.innerHTML = imgs.map((src, i) => `<img src="${src}" alt="thumb ${i+1}" data-src="${src}" class="rounded ${i===0 ? 'active' : ''}">`).join('');
@@ -102,6 +116,13 @@
                             thumbs.querySelectorAll('img').forEach(i => i.classList.remove('active'));
                             t.classList.add('active');
                             mainImg.src = t.dataset.src;
+                            const addBtn = document.querySelector('.add-to-cart');
+                            if (addBtn) {
+                                const vk = v.key || String(idx);
+                                const vp = v.price ? v.price : product.price;
+                                addBtn.setAttribute('data-img', t.dataset.src);
+                                addBtn.setAttribute('data-uid', `${product.id}|${vk}|${vp}|${t.dataset.src}`);
+                            }
                         });
                     });
                     // Actualizar meta si la variante define tamaño/descr.

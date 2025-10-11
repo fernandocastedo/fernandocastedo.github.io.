@@ -123,10 +123,9 @@ window.PRODUCTS = [
         size: { length: "45 cm" },
         description: "Collar de picos en acero con variantes.",
         variants: [
-            { key: "classic", name: "Clásico", price: 55, images: ["imagenes/Productos/NCK Hard Spikes.png"], size: { length: "45 cm" }, description: "Versión clásica con picos definidos en acero." },
-            { key: "small-1", name: "Pequeñas A", price: 70, images: ["imagenes/Productos/NCK Hard Spikes Pequeñas.png"], size: { length: "45 cm" }, description: "Variante con picos pequeños en distribución uniforme." },
-            { key: "small-2", name: "Pequeñas B", price: 70, images: ["imagenes/Productos/NCK Hard Spikes Pequeñas 2.png"], size: { length: "45 cm" }, description: "Variante con picos pequeños y acentos minimalistas." },
-            { key: "inox", name: "Acero Inoxidable", price: 100, images: ["imagenes/Productos/NCK Hard Spikes Acero Inoxidable.png"], size: { length: "45 cm" }, description: "Acero inoxidable para mayor durabilidad y brillo." }
+            { key: "classic", name: "Clásico", price: 55, images: ["imagenes/Productos/NCK Hard Spikes.png", "imagenes/Productos/NCK Hard Spikes.png"], size: { length: "45 cm" }, description: "Versión clásica con picos definidos en acero." },
+            { key: "small", name: "Pequeñas", price: 70, images: ["imagenes/Productos/NCK Hard Spikes Pequeñas.png", "imagenes/Productos/NCK Hard Spikes Pequeñas 2.png"], size: { length: "45 cm" }, description: "Variante con picos pequeños en distribución uniforme y acentos minimalistas." },
+            { key: "inox", name: "Acero Inoxidable", price: 100, images: ["imagenes/Productos/NCK Hard Spikes Acero Inoxidable.png", "imagenes/Productos/NCK Hard Spikes Acero Inoxidable.png"], size: { length: "45 cm" }, description: "Acero inoxidable para mayor durabilidad y brillo." }
         ]
     },
     {
